@@ -1,0 +1,29 @@
+# Checkpoints, logs, and generated outputs — never commit these
+checkpoints/
+logs/
+outputs/
+jobs_test/
+jobs_inference/
+wandb/
+
+# Data
+*.npy
+*.npz
+*.dcm
+*.nii
+*.nii.gz
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.ipynb_checkpoints/
+
+# Environment
+.vscode/*
+!.vscode/settings.json
+*.log
+
+# OS
+.DS_Store
