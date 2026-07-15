@@ -165,8 +165,6 @@ The script auto-detects `mask_mode` from each `MODEL_PATH` to condition the LDM 
 The article is Open Access under **CC BY-NC-ND 4.0** (non-commercial use and sharing permitted with attribution; no derivatives of the article/figures).  This code repository is separately licensed under **Apache License 2.0** (see `LICENSE`).
 
 # 📝 Cite
-
-
 If you find our work useful, please consider to ⭐ star this repository and cite our paper:
 ```bibtex
 @article{Oliveras2026,
@@ -177,3 +175,6 @@ If you find our work useful, please consider to ⭐ star this repository and cit
   doi     = {10.1038/s41598-026-51634-4}
 }
 ```
+
+# 🙏 Acknowledgement
+Some codes in this repository are modified from [wdm-3d](https://github.com/pfriedri/wdm-3d) and [MAISI](https://github.com/Project-MONAI/tutorials/blob/main/generation/maisi/README.md).
