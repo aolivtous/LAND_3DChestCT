@@ -66,7 +66,7 @@ Before running the script, check and adjust the following:
 |-----------------------|-----------------------------------------------------------------------|--------------------------------------------------------------------------|
 | MODEL_CONFIG          | Path to the VAE model architecture config file                      | src/vae/configs/config_vae.json                                       |
 | TRAIN_CONFIG          | Path to the VAE training hyperparameter config                      | src/vae/configs/config_vae_train.json                                 |
-| DATASET_PATH          | Path to the preprocessed `.npy` dataset                             | /data/datasets/LIDC/LIDC_preprocdata_256_v4/                          |
+| DATASET_PATH          | Path to the preprocessed `.npy` dataset                             | /data/datasets/LIDC_LAND/                          |
 | LOG_PATH              | Directory for saving training logs                                  | logs/vae/logging/                                                     |
 | TENSORBOARD_LOG_DIR   | Directory to write TensorBoard logs                                 | logs/vae/tensorboard/                                                 |
 | MODEL_DIR             | Directory where model checkpoints will be saved                     | checkpoints/vae/                                                      |
@@ -87,39 +87,9 @@ This follows a similar structure to `train_vae.sh`, with a few mask-specific add
 |-----------------|------------------------------------------------------------------------------|-----------------|
 | MASK_MODE       | Which mask channels to train on: `"nodule"`, `"nodule+lung"`, or `"nodule+lung+texture"` | nodule+lung     |
 | LATENT_SIZE     | Latent bottleneck size for the mask VAE                                     | 1               |
-| ENABLE_WANDB    | Enable Weights & Biases logging: `True` or `False`                          | False           |
 | NUM_CLASSES     | Auto-derived from `MASK_MODE` (2/3/7 respectively) — no need to set manually | (auto)          |
 
 `MODEL_CONFIG`, `TRAIN_CONFIG`, `DATASET_PATH`, `LOG_PATH`, `TENSORBOARD_LOG_DIR`, `MODEL_DIR`, `TRAIN_PORTION`, `RUN_NAME` behave the same as in `train_vae.sh` above.
-
-## Inference
-For image VAE inference, run:
-
-```bash
-bash scripts/inference_vae.sh
-```
-
-| Variable      | Description                                                  | Example                                            |
-|---------------|----------------------------------------------------------------|------------------------------------------------------|
-| MODEL_DIR     | Directory containing the trained image-VAE checkpoint         | checkpoints/vae/20250514-123257/vae_best_epoch/    |
-| DATASET_PATH  | Path to the preprocessed `.npy` dataset used for inference     | /data/datasets/LIDC/LIDC_preprocdata_256_v4/       |
-| OUTPUT_PATH   | Directory where inference outputs will be saved                | outputs/vae/inference/                             |
-| OUTPUT_CSV    | Path to save reconstruction metrics (recon/KL loss, MS-SSIM, PSNR) as CSV | outputs/vae/metrics_inference.csv        |
-| TRAIN_PORTION | Fraction of dataset used for training (should match training split, so the rest is used for inference) | 0.9 |
-
-For mask VAE inference, run the equivalent script:
-
-```bash
-bash scripts/inference_vae_masks.sh
-```
-
-| Variable      | Description                                                  | Example                                                                    |
-|---------------|----------------------------------------------------------------|-------------------------------------------------------------------------------|
-| MODEL_DIR     | Directory containing the trained mask-VAE checkpoint (`MASK_MODE`/`NUM_CLASSES` are auto-detected from this path) | checkpoints/vaeMasks/vaeMasks_noduleLung_latent1_20260714-124739/vae_best_epoch/ |
-| DATASET_PATH  | Path to the preprocessed `.npy` dataset used for inference     | /data/datasets/LIDC/LIDC_preprocdata_256_v4/                                  |
-| OUTPUT_PATH   | Directory where reconstruction videos will be saved, named after the source mask (e.g. `LIDC-IDRI-0001.mp4`) | outputs/vae/inference_masks/               |
-| OUTPUT_CSV    | Path to save reconstruction metrics as CSV                     | outputs/vae/metrics_masks_inference.csv                                       |
-| TRAIN_PORTION | Fraction of dataset used for training (should match training split) | 0.9                                                                       |
 
 # 🎨 LDM
 ## Training
@@ -137,8 +107,8 @@ Before running the script, check and adjust the following:
 | model_dir              | Directory where LDM model checkpoints will be saved                         | checkpoints/ldm/                                                        |
 | vae_dir                | Path to pretrained image-VAE checkpoint directory (from `train_vae.sh`, stage 2)  | checkpoints/vae/20250514-123257/vae_best_epoch/                   |
 | vae_mask_dir           | Path to pretrained mask-VAE checkpoint directory (from `train_vae_masks.sh`, stage 3); required whenever `mask_mode` is not `none` | checkpoints/vaeMasks/vaeMasks_noduleLungTexture_latent1_20260408-182911/vae_best_epoch/ |
-| image_dataset          | Path to real `.npy` dataset for training                                    | /data/projects/phase-iv/LIDC_preprocdata_256_v4                        |
-| mask_dataset           | Path to optional `.npy` dataset with segmentation masks                     | /data/projects/phase-iv/MICCAI25_data/Datasets/NLST_preprocdata_256_v4 |
+| image_dataset          | Path to real `.npy` dataset for training                                    | /data/datasets/LIDC_LAND/                        |
+| mask_dataset           | Path to optional `.npy` dataset with segmentation masks                     | /data/datasets/LIDC_LAND/ |
 | num_epochs             | Number of training epochs                                                    | 500                                                                     |
 | num_inference_steps    | Number of denoising steps during sample generation                          | 1000                                                                      |
 | save_freq              | How often to save model checkpoints (in epochs)                             | 10                                                                      |
@@ -179,8 +149,8 @@ Before running the script, check and adjust the following:
 |----------------|--------------------------------------------------------------------------------|-----------------------------------------------------------------------------------|
 | VAE_PATH       | Path to the trained image-VAE model checkpoint (from `train_vae.sh`)        | checkpoints/vae/20250514-123257/vae_best_epoch/                                 |
 | VAE_MASK_PATH  | Path to the trained mask-VAE model checkpoint (from `train_vae_masks.sh`); passed on every run regardless of `mask_mode` | checkpoints/vaeMasks/vaeMasks_noduleLungTexture_latent1_20260408-182911/vae_best_epoch/ |
-| MASK_DATASET   | Path to the mask `.npy` dataset (used if `mask_mode` is not `none`)         | /data/projects/phase-iv/MICCAI25_data/Datasets/NLST_preprocdata_256_v4          |
-| SAVE_FOLDER    | Root directory where generated samples will be saved                        | /data/projects/phase-iv/MICCAI_data_inference                                  |
+| MASK_DATASET   | Path to the mask `.npy` dataset (used if `mask_mode` is not `none`)         | /data/datasets/NLST_LAND/          |
+| SAVE_FOLDER    | Root directory where generated samples will be saved                        | outputs/LAND_inferences/                                  |
 | LATENTS_DIR    | (Optional) Path to precomputed VAE latents to reuse across experiments      | leave empty to compute latents on-the-fly                                       |
 | BATCH_SIZE     | Batch size used during inference                                             | 1                                                                                |
 | configs        | Array of `"MODEL_PATH NUM_SAMPLES STEPS"` triples, one per experiment to run | "checkpoints/ldm/2026-04-13_00-10-32_..._mask 3 1000"                           |
