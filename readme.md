@@ -1,5 +1,5 @@
 # 🚀 LAND: Lung and Nodule Diffusion for 3D Chest CT Synthesis with Anatomical Guidance
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Scientific Reports](https://img.shields.io/badge/Scientific%20Reports-10.1038%2Fs41598--026--51634--4-blue)](https://doi.org/10.1038/s41598-026-51634-4)
 [![Project Page](https://img.shields.io/badge/Project-Page-green)](https://aolivtous.github.io/publications/land.html)
 [![Paper License: CC BY-NC-ND 4.0](https://img.shields.io/badge/Paper%20License-CC%20BY--NC--ND%204.0-lightgrey.svg)](http://creativecommons.org/licenses/by-nc-nd/4.0/)
